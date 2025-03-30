@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="services">
-                Kitchen Design • Cabinetry • Countertops • Windows • Hardware
+                Kitchen Design • Cabinetry • Countertops • Windows • Hardware • Flooring
             </div>
             <nav>
                 <a href="#home">Home</a>
@@ -108,6 +108,11 @@
                     <h3>Windows</h3>
                     <p>Energy-efficient, stylish window solutions to brighten your kitchen space.</p>
                 </div>
+                <div class="service-card">
+                    <i class="fas fa-th"></i>
+                    <h3>Flooring</h3>
+                    <p>Quality flooring options including hardwood, tile, vinyl, and laminate to complete your kitchen renovation.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -139,28 +144,33 @@
                 <div class="contact-info">
                     <h3>Get In Touch</h3>
                     <p><strong>Phone:</strong> (732) 566-4400</p>
-                    <p><strong>Email:</strong> <a href="mailto:info@metrokitchencabinets.com">info@metrokitchencabinets.com</a></p>
+                    <p><strong>Email:</strong> <a href="mailto:metrooutletnj@gmail.com">metrooutletnj@gmail.com</a></p>
                     <p><strong>Hours:</strong><br>
-                    Monday - Friday: 9am - 6pm<br>
-                    Saturday: 10am - 4pm<br>
+                    Monday - Friday: 10am - 6pm<br>
+                    Saturday: 10am - 2pm<br>
                     Sunday: Closed</p>
-                    <p><strong>Showroom:</strong><br>
+                    <p><strong>Location:</strong><br>
                     1105 Union Ave, Union Beach, NJ 07735</p>
                 </div>
                 <div class="contact-form">
-                    <form id="contactForm">
+                    <form id="contactForm" action="https://formspree.io/f/metrooutletnj@gmail.com" method="POST">
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" id="name" name="name" required>
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone</label>
-                            <input type="tel" id="phone" name="phone" required>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email">
                         </div>
                         <div class="form-group">
                             <label for="message">Message</label>
                             <textarea id="message" name="message" required></textarea>
                         </div>
+                        <input type="hidden" name="_subject" value="New inquiry from Metro Kitchen Cabinets website">
                         <button type="submit">Send Message</button>
                     </form>
                 </div>
@@ -191,23 +201,46 @@
     <!-- Form Submission Script -->
     <script>
         document.getElementById('contactForm').addEventListener('submit', function(event) {
+            // Prevent default form submission
             event.preventDefault();
             
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
             const message = document.getElementById('message').value;
             
-            // Format the message for SMS
-            const smsBody = `New inquiry from ${name}. Phone: ${phone}. Message: ${message}`;
-            
-            // Create SMS link for mobile devices
-            const smsLink = `sms:+17325664400?body=${encodeURIComponent(smsBody)}`;
+            if (!phone && !email) {
+                alert('Please provide either a phone number or an email address so we can contact you.');
+                return;
+            }
             
             // Show confirmation
-            alert('Thank you for your message! We will contact you shortly.\n\nYou can also reach us directly at: (732) 566-4400');
+            alert('Thank you for your message! We will contact you shortly.');
             
-            // Try to open SMS app on mobile devices
-            window.location.href = smsLink;
+            // If phone is provided, send SMS
+            if (phone) {
+                // Format the message for SMS
+                const smsBody = `New inquiry from ${name}. Phone: ${phone}. Message: ${message}`;
+                
+                // Create SMS link for mobile devices
+                const smsLink = `sms:+17325664400?body=${encodeURIComponent(smsBody)}`;
+                
+                // Try to open SMS app on mobile devices
+                window.location.href = smsLink;
+            }
+            
+            // If email is provided, send email via Formspree
+            if (email) {
+                const formData = new FormData(this);
+                
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+            }
             
             // Reset form
             this.reset();
